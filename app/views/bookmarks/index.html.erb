@@ -1,0 +1,44 @@
+<div class="container">
+  <h4>Bookmarks <%= link_to 'New Bookmark', new_bookmark_path, class: 'btn btn-min btn-primary', style: "float:right" %></h4>
+  <br>
+  <div class="col-sm-12">
+    <%= search_form_for(@q, html: {class: 'form-inline'}) do |f| %>
+      <div class="col-sm-12 pull-right">
+          <%= f.select(:category_id_eq, options_from_collection_for_select(@categories, "id", "name", @q.category_id_eq), {prompt: "Select Category"}, {class: 'form-control'}) %>
+          <%= f.search_field :title_or_host_or_url_cont, placeholder: "Title/Host/URL", class: 'form-control' %>
+          <%= f.submit "Search", class: "btn btn-success btn-min"%>
+      </div>
+    <% end %>
+    <br>
+    <% if @bookmarks.blank? %>
+      <h4><center><strong>No Bookmarks created yet!</strong></center></h4>
+    <% else %>
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>Title</th>
+            <th>Host</th>
+            <th>Url</th>
+            <th>Category</th>
+            <th colspan="3"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @bookmarks.each do |bookmark| %>
+            <tr>
+              <td><%= bookmark.title %></td>
+              <td><%= bookmark.host %></td>
+              <td><%= bookmark.url %></td>
+              <td><%= bookmark.category.name %></td>
+              <td colspan="3"><%= link_to 'Show', bookmark, class: 'btn btn-min btn-success' %>
+                <%= link_to 'Edit', edit_bookmark_path(bookmark), class: 'btn btn-min btn-info' %>
+                <%= link_to 'Destroy', bookmark, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-min btn-danger' %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    <% end %>
+  </div>
+</div>
+
